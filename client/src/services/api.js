@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'https://ai-power-app.onrender.com/api';
 
 const getHeaders = () => {
     const token = typeof window !== 'undefined' ? window.localStorage.getItem('token') : null;
