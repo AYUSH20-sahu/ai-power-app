@@ -1,6 +1,6 @@
 import { connectToDatabase } from '../db/mongo.js';
 import { buildGenerationPrompt } from '../constants/prompts.js';
-import { parseGenerationResponse } from '../utils/code.utils.js';
+import { generateHtmlFromPrompt } from '../utils/code.utils.js';
 
 export const generateCode = async (req, res) => {
     try {
@@ -15,8 +15,9 @@ export const generateCode = async (req, res) => {
         }
 
         const fullPrompt = buildGenerationPrompt(project.messages, project.generatedCode, prompt.trim());
-        const aiResponse = `I built an interactive demo for your request.\n\n\`\`\`html\n${project.generatedCode || '<!DOCTYPE html><html><head><style>body{font-family:Arial, sans-serif;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#2d1b69,#0f172a);color:white;padding:24px;} .card{background:rgba(255,255,255,.12);padding:24px;border-radius:20px;box-shadow:0 20px 45px rgba(0,0,0,.3);max-width:620px;} h1{margin-top:0;} button{padding:10px 18px;border:0;border-radius:999px;background:#38bdf8;color:#052e16;font-weight:700;cursor:pointer;} </style></head><body><div class="card"><h1>AI Power App Builder</h1><p>${prompt.trim()}</p><button>Try it</button></div></body></html>'}\n\`\`\``;
-        const { description, code } = parseGenerationResponse(aiResponse);
+        const aiResult = await generateHtmlFromPrompt(prompt.trim(), project.generatedCode, project.messages || []);
+        const description = aiResult.description || 'Here is your generated code.';
+        const code = aiResult.code || '';
 
         const update = {
             $push: {
