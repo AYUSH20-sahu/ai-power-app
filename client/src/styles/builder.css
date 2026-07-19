@@ -127,6 +127,12 @@
     border-bottom-left-radius: 6px;
 }
 
+.chat-bubble-fallback {
+    border: 1px solid rgba(250, 204, 21, .45);
+    background: rgba(120, 53, 15, .35);
+    color: #fde68a;
+}
+
 .chat-bubble-text {
     margin: 0;
     font-size: .95rem;
