@@ -50,6 +50,10 @@ function BuilderPage() {
 
         try {
             const result = await generateCode(projectId, prompt);
+            const fallbackUsed = typeof result?.message?.content === 'string' && result.message.content.toLowerCase().includes('fallback');
+            if (fallbackUsed) {
+                showToast('The AI model is unavailable, so a starter fallback page was used instead.', 'warning');
+            }
             setMessages((current) => [...current, result.message]);
             if (result.generatedCode) {
                 setCode(result.generatedCode);
