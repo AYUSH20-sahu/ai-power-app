@@ -9,9 +9,11 @@ function ChatMessage({ message }) {
         return `${displayHours}:${minutes} ${ampm}`;
     };
 
+    const isFallbackNotice = !isUser && typeof message.content === 'string' && message.content.toLowerCase().includes('fallback');
+
     return (
         <div className={`chat-message ${isUser ? 'chat-message-user' : 'chat-message-ai'}`}>
-            <div className={`chat-bubble ${isUser ? 'chat-bubble-user' : 'chat-bubble-ai'}`}>
+            <div className={`chat-bubble ${isUser ? 'chat-bubble-user' : 'chat-bubble-ai'} ${isFallbackNotice ? 'chat-bubble-fallback' : ''}`}>
                 <p className="chat-bubble-text">{message.content}</p>
             </div>
             <span className="chat-timestamp">{formatTime(message.timestamp)}</span>
